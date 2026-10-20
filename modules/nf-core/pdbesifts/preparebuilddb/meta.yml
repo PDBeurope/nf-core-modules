@@ -16,6 +16,7 @@ tools:
       homepage: "https://github.com/PDBeurope/SIFTS"
       documentation: "https://github.com/PDBeurope/SIFTS/blob/main/docs/cli.md"
       tool_dev_url: "https://github.com/PDBeurope/SIFTS"
+      doi: "10.1093/nar/gky1114"
       licence:
         - "Apache-2.0"
       identifier: ""
@@ -30,6 +31,7 @@ input:
         type: file
         description: |
           UniProtKB FASTA file with headers like `>sp|ACCESSION|... OX=TAXID`.
+          Headers without `OX=` are left out of the taxonomy mapping.
           If empty (`[]`), UniProt Swiss-Prot is downloaded instead.
         pattern: "*.{fasta,fa,faa,fasta.gz,fa.gz,faa.gz}"
         optional: true
@@ -45,7 +47,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "${prefix}.fasta.gz":
           type: file
-          description: Gzipped UniProtKB FASTA file
+          description: Gzipped copy of the input FASTA, or the downloaded
+            UniProt Swiss-Prot FASTA when no input is given
           pattern: "*.fasta.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1929" # FASTA
@@ -64,13 +67,13 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   versions_pdbesifts:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "pdbe_sifts":
+      - pdbe_sifts:
           type: string
           description: The name of the tool
-      - "pdbe_sifts --version | sed 's/pdbe_sifts //'":
+      - pdbe_sifts --version | sed 's/pdbe_sifts //':
           type: eval
           description: The expression to obtain the version of the tool
 
