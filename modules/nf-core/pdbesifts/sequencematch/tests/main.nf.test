@@ -18,7 +18,10 @@ nextflow_process {
                     [ id:'1cbs' ],
                     file('https://raw.githubusercontent.com/npechl/test-datasets/modules/data/proteomics/cif/1cbs.cif', checkIfExists: true)
                 ]
-                input[1] = file('https://raw.githubusercontent.com/npechl/test-datasets/modules/data/proteomics/database/yeast_UPS_mini.fasta', checkIfExists: true)
+                input[1] = [
+                    [ id:'yeast_UPS_mini' ],
+                    file('https://raw.githubusercontent.com/npechl/test-datasets/modules/data/proteomics/database/yeast_UPS_mini.fasta', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -27,7 +30,8 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out,
+                    file(process.out.duckdb[0][1]).name,
+                    process.out.tsv,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -46,7 +50,10 @@ nextflow_process {
                     [ id:'1cbs' ],
                     file('https://raw.githubusercontent.com/npechl/test-datasets/modules/data/proteomics/cif/1cbs.cif', checkIfExists: true)
                 ]
-                input[1] = file('https://raw.githubusercontent.com/npechl/test-datasets/modules/data/proteomics/database/yeast_UPS_mini.fasta', checkIfExists: true)
+                input[1] = [
+                    [ id:'yeast_UPS_mini' ],
+                    file('https://raw.githubusercontent.com/npechl/test-datasets/modules/data/proteomics/database/yeast_UPS_mini.fasta', checkIfExists: true)
+                ]
                 """
             }
         }

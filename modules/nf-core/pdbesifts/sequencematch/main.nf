@@ -1,6 +1,6 @@
 process PDBESIFTS_SEQUENCEMATCH {
-    tag "$meta.id"
-    label 'process_single'
+    tag "${meta.id}"
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
@@ -9,12 +9,12 @@ process PDBESIFTS_SEQUENCEMATCH {
 
     input:
     tuple val(meta), path(input_file)
-    path db
+    tuple val(meta2), path(db)
 
     output:
     tuple val(meta), path("${prefix}/*/*.duckdb"), emit: duckdb
     tuple val(meta), path("${prefix}/*/*.tsv")   , emit: tsv
-    tuple val("${task.process}"), val('pdbesifts'), eval("python3 -c \"from importlib.metadata import version; print(version('pdbe_sifts'))\""), topic: versions, emit: versions_pdbesifts
+    tuple val("${task.process}"), val('pdbe_sifts'), eval("python3 -c \"from importlib.metadata import version; print(version('pdbe_sifts'))\""), topic: versions, emit: versions_pdbesifts
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,18 +25,20 @@ process PDBESIFTS_SEQUENCEMATCH {
     """
     pdbe_sifts \\
         sequence_match \\
-        -i $input_file \\
-        -o $prefix \\
-        -d $db \\
-        --threads $task.cpus \\
-        $args
+        -i ${input_file} \\
+        -o ${prefix} \\
+        -d ${db} \\
+        --threads ${task.cpus} \\
+        ${args}
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    // Mirrors the tool's entry-name derivation: strip the first matching known suffix
+    def entry = input_file.name.replaceFirst(/(?i)(\.cif\.gz|\.cif|\.fasta|\.fa|\.faa|\.txt)$/, '')
     """
-    mkdir -p ${prefix}/mmseqs_${prefix}
-    touch ${prefix}/mmseqs_${prefix}/hits.duckdb
-    touch ${prefix}/mmseqs_${prefix}/hits_${prefix}.tsv
+    mkdir -p ${prefix}/mmseqs_${entry}
+    touch ${prefix}/mmseqs_${entry}/hits.duckdb
+    touch ${prefix}/mmseqs_${entry}/hits_${entry}.tsv
     """
 }
