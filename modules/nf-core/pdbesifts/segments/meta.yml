@@ -1,0 +1,112 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pdbesifts_segments"
+description: Generate SIFTS residue-level and segment-level mappings between the
+  polypeptide chains of a PDB mmCIF entry and UniProtKB sequences
+keywords:
+  - sifts
+  - pdbe
+  - uniprot
+  - mmcif
+  - protein structure
+  - mapping
+tools:
+  - "pdbesifts":
+      description: "Python package to run SIFTS (Structure Integration with
+        Function, Taxonomy and Sequences) from EMBL-EBI locally"
+      homepage: "https://github.com/PDBeurope/SIFTS"
+      documentation: "https://github.com/PDBeurope/SIFTS/blob/main/docs/cli.md"
+      tool_dev_url: "https://github.com/PDBeurope/SIFTS"
+      doi: "10.1093/nar/gky1114"
+      licence:
+        - "Apache-2.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - cif:
+        type: file
+        description: mmCIF file of a single PDB entry
+        pattern: "*.{cif,cif.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1477" # mmCIF
+    - db:
+        type: file
+        description: |
+          DuckDB file of ranked sequence matches produced by
+          `pdbe_sifts sequence_match` (e.g. PDBESIFTS_SEQUENCEMATCH). If empty
+          (`[]`), a chain-to-accession mapping must be given through
+          `ext.args`, e.g. `-m A:P29373`.
+        pattern: "*.duckdb"
+        optional: true
+        ontologies: []
+output:
+  seg:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}/*_seg.csv.gz":
+          type: file
+          description: Gzipped CSV of segment-level mappings between PDB chains
+            and UniProtKB (`*_nf90_seg.csv.gz` in UniRef90 mode)
+          pattern: "*_seg.csv.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+            - edam: "http://edamontology.org/format_3989" # GZIP format
+  res:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}/*_res.csv.gz":
+          type: file
+          description: Gzipped CSV of residue-level mappings between PDB chains
+            and UniProtKB
+          pattern: "*_res.csv.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+            - edam: "http://edamontology.org/format_3989" # GZIP format
+  delta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}/*_delta.csv.gz":
+          type: file
+          description: Gzipped CSV listing UniProtKB mapping changes for the
+            entry (not written in UniRef90 mode)
+          pattern: "*_delta.csv.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+            - edam: "http://edamontology.org/format_3989" # GZIP format
+  versions_pdbesifts:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pdbe_sifts:
+          type: string
+          description: The name of the tool
+      - python3 -c "from importlib.metadata import version; print(version('pdbe_sifts'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pdbe_sifts:
+          type: string
+          description: The name of the tool
+      - python3 -c "from importlib.metadata import version; print(version('pdbe_sifts'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@npechl"
+maintainers:
+  - "@npechl"
