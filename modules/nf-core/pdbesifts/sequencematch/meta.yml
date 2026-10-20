@@ -1,5 +1,6 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "pdbesifts_sequencematch"
-description: Align PDB entity sequences extracted from an mmCIF/FASTA file against a pre-built reference sequence database (MMseqs2 or BLASTP), score the hits with the SIFTS scoring function, and store the ranked sequence matches in DuckDB.
+description: Align PDB entity sequences extracted from an mmCIF/FASTA file against a reference sequence database (MMseqs2 or BLASTP), score the hits with the SIFTS scoring function, and store the ranked sequence matches in DuckDB.
 keywords:
   - sifts
   - pdbe
@@ -9,10 +10,11 @@ keywords:
   - protein structure
 tools:
   - "pdbesifts":
-      description: "Python package to run SIFTS (Structure Integration with Function, Taxonomy and Sequences) from EMBL-EBI locally."
-      homepage: "https://pypi.org/project/pdbe-sifts/"
-      documentation: "https://pypi.org/project/pdbe-sifts/"
+      description: "Python package to run SIFTS (Structure Integration with Function, Taxonomy and Sequences) from EMBL-EBI locally"
+      homepage: "https://github.com/PDBeurope/SIFTS"
+      documentation: "https://github.com/PDBeurope/SIFTS/blob/main/docs/cli.md"
       tool_dev_url: "https://github.com/PDBeurope/SIFTS"
+      doi: "10.1093/nar/gky1114"
       licence:
         - "Apache-2.0"
       identifier: ""
@@ -26,11 +28,17 @@ input:
         type: file
         description: A single mmCIF file, a FASTA file of query sequences, or a text file listing mmCIF paths
         pattern: "*.{cif,cif.gz,fasta,fa,faa,txt}"
-        ontologies: []
-  - db:
-      type: directory
-      description: Pre-built reference sequence database created by `pdbe_sifts build_db` (MMseqs2 or BLASTP)
-
+        ontologies:
+          - edam: "http://edamontology.org/format_1477" # mmCIF
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference database information
+          e.g. `[ id:'uniprot_sprot' ]`
+    - db:
+        type: directory
+        description: Pre-built reference sequence database created by `pdbe_sifts build_db` (MMseqs2 or BLASTP)
 output:
   duckdb:
     - - meta:
@@ -54,30 +62,28 @@ output:
           description: Raw alignment hits reported by the chosen search tool
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: "http://edamontology.org/format_3475" # TSV
   versions_pdbesifts:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "pdbesifts":
+      - pdbe_sifts:
           type: string
           description: The name of the tool
-      - 'python3 -c "from importlib.metadata import version; print(version(''pdbe_sifts''))"':
+      - python3 -c "from importlib.metadata import version; print(version('pdbe_sifts'))":
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "pdbesifts":
+      - pdbe_sifts:
           type: string
           description: The name of the tool
-      - 'python3 -c "from importlib.metadata import version; print(version(''pdbe_sifts''))"':
+      - python3 -c "from importlib.metadata import version; print(version('pdbe_sifts'))":
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@npechl"
 maintainers:
