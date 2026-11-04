@@ -1,0 +1,170 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTA_MAKEDB_TAXONOMY_MMSEQS_BLAST"
+    script "../main.nf"
+    workflow "FASTA_MAKEDB_TAXONOMY_MMSEQS_BLAST"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_makedb_taxonomy_mmseqs_blast"
+    tag "mmseqs"
+    tag "mmseqs/createdb"
+    tag "mmseqs/createtaxdb"
+    tag "mmseqs/createindex"
+    tag "blast"
+    tag "blast/makeblastdb"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../../modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'taxdump' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("uniprot_sprot_mini - fasta - mmseqs") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/uniprot_sprot_mini.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/database/uniprot_sprot_mini.tax_mapping.tsv', checkIfExists: true)
+                ])
+                input[1] = UNTAR.out.untar
+                input[2] = 'mmseqs'
+                """
+            }
+        }
+
+        then {
+            def db_dir = file(workflow.out.db[0][1])
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.trace.tasks().findAll { task -> task.name.startsWith('FASTA_MAKEDB_TAXONOMY_MMSEQS_BLAST:') }.collect { task -> task.name.tokenize(' ')[0].tokenize(':')[-1] }.toSet() == ['MMSEQS_CREATEDB', 'MMSEQS_CREATETAXDB', 'MMSEQS_CREATEINDEX'].toSet() },
+                { assert snapshot(
+                    workflow.out.db[0][0],
+                    db_dir.list().sort(),
+                    path("${db_dir}/test.lookup"),
+                    path("${db_dir}/test_mapping"),
+                ).match() }
+            )
+        }
+    }
+
+    test("uniprot_sprot_mini - fasta - blast") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/uniprot_sprot_mini.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/database/uniprot_sprot_mini.tax_mapping.tsv', checkIfExists: true)
+                ])
+                input[1] = [ [], [] ]
+                input[2] = 'blast'
+                """
+            }
+        }
+
+        then {
+            def db_dir = file(workflow.out.db[0][1])
+            def stable_files = db_dir.listFiles().findAll { db_file -> !(db_file.name.endsWith('.pjs') || db_file.name.endsWith('.pdb') || db_file.name.endsWith('.pot')) }.sort { db_file -> db_file.name }
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.trace.tasks().findAll { task -> task.name.startsWith('FASTA_MAKEDB_TAXONOMY_MMSEQS_BLAST:') }.collect { task -> task.name.tokenize(' ')[0].tokenize(':')[-1] }.toSet() == ['BLAST_MAKEBLASTDB'].toSet() },
+                { assert snapshot(
+                    workflow.out.db[0][0],
+                    db_dir.list().sort(),
+                    stable_files,
+                ).match() }
+            )
+        }
+    }
+
+    test("uniprot_sprot_mini - fasta - unsupported tool") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/uniprot_sprot_mini.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/database/uniprot_sprot_mini.tax_mapping.tsv', checkIfExists: true)
+                ])
+                input[1] = [ [], [] ]
+                input[2] = 'diamond'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.failed },
+                { assert workflow.stdout.any { line -> line.contains("Unsupported val_tool 'diamond'") } }
+            )
+        }
+    }
+
+    test("uniprot_sprot_mini - fasta - mmseqs - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/uniprot_sprot_mini.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/database/uniprot_sprot_mini.tax_mapping.tsv', checkIfExists: true)
+                ])
+                input[1] = UNTAR.out.untar
+                input[2] = 'mmseqs'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("uniprot_sprot_mini - fasta - blast - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/uniprot_sprot_mini.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/database/uniprot_sprot_mini.tax_mapping.tsv', checkIfExists: true)
+                ])
+                input[1] = [ [], [] ]
+                input[2] = 'blast'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}

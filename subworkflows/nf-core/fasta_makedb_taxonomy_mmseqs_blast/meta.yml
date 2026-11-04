@@ -1,0 +1,57 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_makedb_taxonomy_mmseqs_blast"
+description: |
+  Build a taxonomy-aware protein target database from a FASTA file with either MMseqs2
+  (createdb, createtaxdb and createindex) or BLAST (makeblastdb with a taxid map), so that
+  search hits report the taxonomy identifier of each target sequence.
+  When val_tool is 'blast', BLAST_MAKEBLASTDB MUST be configured with
+  `ext.args = '-dbtype prot -parse_seqids'`; without it makeblastdb builds a nucleotide
+  database and does not attach the taxid map to the sequence accessions.
+keywords:
+  - database
+  - taxonomy
+  - protein
+  - fasta
+  - mmseqs2
+  - blast
+components:
+  - mmseqs/createdb
+  - mmseqs/createtaxdb
+  - mmseqs/createindex
+  - blast/makeblastdb
+input:
+  - ch_fasta_taxmap:
+      type: file
+      description: |
+        Protein sequences to index, together with a header-less, two-column, tab-separated
+        mapping of sequence accession to NCBI taxonomy identifier. Accessions are matched
+        against the identifier MMseqs2 and BLAST extract from each FASTA header, which for
+        UniProt headers (e.g. `>sp|P0DTC4|VEMP_SARS2 ...`) is the accession (`P0DTC4`).
+        Structure: [ val(meta), path(fasta), path(tax_mapping) ]
+      pattern: "*.{fasta,fa,faa,fasta.gz,fa.gz,faa.gz}"
+  - ch_taxdump:
+      type: directory
+      description: |
+        Uncompressed NCBI taxonomy dump directory (containing at least names.dmp,
+        nodes.dmp, merged.dmp and delnodes.dmp). Required when val_tool is 'mmseqs';
+        ignored when val_tool is 'blast'. Only the first element is used.
+        Structure: [ val(meta2), path(taxdump_dir) ]
+  - val_tool:
+      type: string
+      description: |
+        Search tool to build the database for.
+      enum:
+        - "mmseqs"
+        - "blast"
+output:
+  - db:
+      type: directory
+      description: |
+        Directory containing the taxonomy-aware target database. For 'mmseqs' this is
+        an indexed MMseqs2 database named after meta.id; for 'blast' it is a BLAST
+        protein database named after the input FASTA file.
+        Structure: [ val(meta), path(db_dir) ]
+authors:
+  - "@AMarinhoSN"
+maintainers:
+  - "@AMarinhoSN"

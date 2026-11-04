@@ -1,0 +1,164 @@
+{
+    "uniprot_sprot_mini - fasta - mmseqs": {
+        "content": [
+            {
+                "id": "test"
+            },
+            [
+                "test",
+                "test.dbtype",
+                "test.idx",
+                "test.idx.dbtype",
+                "test.idx.index",
+                "test.index",
+                "test.lookup",
+                "test.source",
+                "test_h",
+                "test_h.dbtype",
+                "test_h.index",
+                "test_mapping",
+                "test_taxonomy"
+            ],
+            "test.lookup:md5,8e0e88d204344c82a397cd77f0d217d4",
+            "test_mapping:md5,b08544e3fb94bd8c0f7672c476ea6d13"
+        ],
+        "timestamp": "2026-11-02T14:42:01.768192",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "26.10.0"
+        }
+    },
+    "uniprot_sprot_mini - fasta - mmseqs - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.dbtype:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.idx:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.index:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.lookup:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.source:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_h:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_h.dbtype:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_h.index:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_mapping:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_taxonomy:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "db": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.dbtype:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.idx:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.index:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.lookup:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.source:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_h:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_h.dbtype:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_h.index:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_mapping:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_taxonomy:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-02T14:42:08.932891",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "26.10.0"
+        }
+    },
+    "uniprot_sprot_mini - fasta - blast - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "uniprot_sprot_mini.fasta:md5,8b656a22546b5b1e3a1c78aef4e47b82",
+                            "uniprot_sprot_mini.fasta.fasta:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.ndb:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.nhr:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.nin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.njs:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.not:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.nsq:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.ntf:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.nto:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "db": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "uniprot_sprot_mini.fasta:md5,8b656a22546b5b1e3a1c78aef4e47b82",
+                            "uniprot_sprot_mini.fasta.fasta:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.ndb:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.nhr:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.nin:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.njs:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.not:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.nsq:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.ntf:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "uniprot_sprot_mini.fasta.fasta.nto:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-02T14:42:11.501363",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "26.10.0"
+        }
+    },
+    "uniprot_sprot_mini - fasta - blast": {
+        "content": [
+            {
+                "id": "test"
+            },
+            [
+                "uniprot_sprot_mini.fasta.pdb",
+                "uniprot_sprot_mini.fasta.phr",
+                "uniprot_sprot_mini.fasta.pin",
+                "uniprot_sprot_mini.fasta.pjs",
+                "uniprot_sprot_mini.fasta.pog",
+                "uniprot_sprot_mini.fasta.pos",
+                "uniprot_sprot_mini.fasta.pot",
+                "uniprot_sprot_mini.fasta.psq",
+                "uniprot_sprot_mini.fasta.ptf",
+                "uniprot_sprot_mini.fasta.pto"
+            ],
+            [
+                "uniprot_sprot_mini.fasta.phr:md5,06be3dff6d3560902cc33aa104cb50dd",
+                "uniprot_sprot_mini.fasta.pin:md5,4d95ad4859656b2b4a71acb20f90f34b",
+                "uniprot_sprot_mini.fasta.pog:md5,f26d36bdba48456d803ae0dfaabcfbe6",
+                "uniprot_sprot_mini.fasta.pos:md5,4ae16fae33a3cd68fc0d2e742e38b20c",
+                "uniprot_sprot_mini.fasta.psq:md5,547133dab0c9e2fb9ef540b74899c76a",
+                "uniprot_sprot_mini.fasta.ptf:md5,59e246187b69101dd9229229a1fe8694",
+                "uniprot_sprot_mini.fasta.pto:md5,29e6a15a8a749f76c0d5421f6acd59fd"
+            ]
+        ],
+        "timestamp": "2026-11-02T14:42:04.275367",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "26.10.0"
+        }
+    }
+}
