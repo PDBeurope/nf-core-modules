@@ -147,15 +147,14 @@
             ],
             [
                 "uniprot_sprot_mini.fasta.phr:md5,06be3dff6d3560902cc33aa104cb50dd",
-                "uniprot_sprot_mini.fasta.pin:md5,4d95ad4859656b2b4a71acb20f90f34b",
                 "uniprot_sprot_mini.fasta.pog:md5,f26d36bdba48456d803ae0dfaabcfbe6",
                 "uniprot_sprot_mini.fasta.pos:md5,4ae16fae33a3cd68fc0d2e742e38b20c",
                 "uniprot_sprot_mini.fasta.psq:md5,547133dab0c9e2fb9ef540b74899c76a",
-                "uniprot_sprot_mini.fasta.ptf:md5,59e246187b69101dd9229229a1fe8694",
+                "uniprot_sprot_mini.fasta.ptf:md5,c35f937f648378918ecce9623af25100",
                 "uniprot_sprot_mini.fasta.pto:md5,29e6a15a8a749f76c0d5421f6acd59fd"
             ]
         ],
-        "timestamp": "2026-11-02T14:42:04.275367",
+        "timestamp": "2026-11-04T09:06:10.672132",
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "26.10.0"

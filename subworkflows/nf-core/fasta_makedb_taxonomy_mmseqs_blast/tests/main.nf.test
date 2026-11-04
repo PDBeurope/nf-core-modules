@@ -79,7 +79,9 @@ nextflow_workflow {
 
         then {
             def db_dir = file(workflow.out.db[0][1])
-            def stable_files = db_dir.listFiles().findAll { db_file -> !(db_file.name.endsWith('.pjs') || db_file.name.endsWith('.pdb') || db_file.name.endsWith('.pot')) }.sort { db_file -> db_file.name }
+            // .pin, .pjs, .pdb and .pot embed the database creation time
+            def unstable_extensions = ['.pin', '.pjs', '.pdb', '.pot']
+            def stable_files = db_dir.listFiles().findAll { db_file -> !unstable_extensions.any { ext -> db_file.name.endsWith(ext) } }.sort { db_file -> db_file.name }
             assertAll(
                 { assert workflow.success },
                 { assert workflow.trace.tasks().findAll { task -> task.name.startsWith('FASTA_MAKEDB_TAXONOMY_MMSEQS_BLAST:') }.collect { task -> task.name.tokenize(' ')[0].tokenize(':')[-1] }.toSet() == ['BLAST_MAKEBLASTDB'].toSet() },
